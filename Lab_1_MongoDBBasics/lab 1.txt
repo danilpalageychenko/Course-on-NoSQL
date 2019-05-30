@@ -1,0 +1,80 @@
+2. db.lab1.find();
+3.
+ db.lab1.find({"category" : "Phone"});  //по категории
+ db.lab1.find({"price" : {$gte: 100, $lte : 600}}); //диапазон цен
+ db.lab1.find({"diagonal": {$lt : 30}}); // меньше 30 дюймов
+4.db.lab1.find({"category": "OS"}).count(); // количество книг
+5.db.lab1.find({},{"producer":1, "_id":0}); or db.lab1.distinct("producer");  // споиско всех производителей
+6.
+ db.lab1.update({"producer" : "Apple"},{$set :{"price" : 650}}); // изменение значения
+ db.lab1.update({"model" : "G325"},{$set :{"date" : 2017}}); // добавления свойства
+ 
+7.db.lab1.find({"diagonal" : {"$exists" : true}}); //найти все обекты по определенной категории
+
+
+
+
+
+2. db.lab1.find({"order_items_id" : {"$exists" : true}}); // найти все заказы
+3. db.lab1.find({"order_items_id" : {"$exists" : true}, "total_sum" : {$gt : 2349}}); // найти все заказы со стоимостью больще определенного значения
+4. db.lab1.find({"order_items_id" : {"$exists" : true}, "customer.name" : "Andrii", "customer.surname" : "Rodinov"}); //найти все заказы одного заказчика
+5. db.lab1.find({"order_items_id" : {"$exists" : true}, "order_items_id.$id" : ObjectId("5b98f82348404023f46dfac0")}); //найти все заказы с определенным товаром
+6. 
+ db.lab1.distinct("order_items_id", {"order_number" : 769769679}); //вывести список товарор в определенном заказе
+ db.lab1.distinct("order_items_id", {"order_number" : 769769679}).length; // вивести количество товаров в определенном заказе
+7.
+ db.lab1.find({"total_sum" : {$gt : 1924}}, {"payment.card_owner" : 1, "payment.cardId" : 1, "_id" : 0}); // вывести номер кредитки и имя покупателя чей заказ превышает определенную суму
+ db.lab1.distinct("payment", {"total_sum" : {$gt : 1924}});
+8.db.lab1.update({"_id" : ObjectId("5b991fc548404023f46e21fb")}, {$push : {"order_items_id" : {"$ref" : "items", "$id" : ObjectId("552bc0f7bbcdf26a32e99954")}}}) // добавить товар в заказ
+9.db.lab1.update({"customer" : {"$exists" : true}}, {$set : {"customer.surname" : "petrov"}}, false, true); // изминить фамилию во всех заказах
+10. ddb.lab1.update({ "order_items_id.$id" : ObjectId("552bc0f7bbcdf26a32e99954")}, {$push : {"order_items_id" : {"$ref" : "items", "$id" : ObjectId("5b98f82d48404023f46dfac8")}}, $inc : {"total_sum" : 100} }, false, true) 
+// добавит в заказы с определенным товаром ещё один товар и увеличить стоимость на X
+ 
+ 
+db.lab1.find({"order_number" : 769769679},{"order_items_id" : 1});
+
+
+
+
+Ссылки
+https://habr.com/post/134524/ //изменение
+https://habr.com/post/134590/ //поиск
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+1. / найти все товари по категории
+db.lab1.find({"category" : "Phone"});
+
+2. / найти все товары по категории и добавить поля с значением
+db.lab1.update({"category" : "Phone"},{$set :{"properties" : "qwe"}} , false, true );
+
+3. / найти все товарфи с определенным полям
+db.lab1.find({"properties": {"$exists" : true}});
+
+4. / наличие значение и инкрементировать поля
+db.lab1.update({"properties": {"$exists" : true}}, {$inc : { "price": 100 }}, false, true);
+
+5./ Промежуток цен
+db.lab1.find({"price" : {$gte: 200, $lte : 900}});
+
+6. / Найти либо то ли другое значение в определенном поле.
+db.lab1.find({"price" : {$gte: 200, $lte : 900}, "producer": {$in : ["Samsung", "Huawei"]}});
+
+7. / Вывести все заказы с определенным товаром
+db.lab1.find({"order_items_id" : {"$exists" : true}, "order_items_id.$id" : ObjectId("5b98f82348404023f46dfac0")})
+или 
+db.lab1.find({"order_items_id" : {$elemMatch : {"$id" : ObjectId("5b98f82348404023f46dfac0")}}})
+
+8. / во все найденые товарт више добавить по одному заказу
+db.lab1.update({"order_items_id" : {$elemMatch : {"$id" : ObjectId("5b98f82348404023f46dfac0")}}} , {$push : {"order_items_id" : {"$ref" : "items", "$id" : ObjectId("552bc0f7bbcdf26a32e99954")}}},false, true )
+
+9. / вивести количество товаров в определенном заказе
+db.lab1.distinct("order_items_id", {"order_number" : 769769679}).length;
+
+10. / Найти заказі по дате и вівести определенніе поля
+db.lab1.find({"date" : { $gte : new ISODate("2015-04-15T00:34:20.201Z")}}, {"customer.name" : 1, "total_sum" : 1,  _id : 0 })

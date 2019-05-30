@@ -1,0 +1,191 @@
+md "\data\n1" "\data\n2" "\data\n3" "\data\b1" "\data\b2" "\data\b3"
+
+mongod --configsvr --dbpath "c:\data\n1" --port 27019	//в окремій cmd запускати від Адміністратора
+mongod --configsvr --dbpath "c:\data\n2" --port 37019	//в окремій cmd запускати від Адміністратора
+mongod --configsvr --dbpath "c:\data\n3" --port 47019	//в окремій cmd запускати від Адміністратора
+
+mongos --configdb localhost:27019,localhost:37019,localhost:47019 --port 27000	//в окремій cmd запускати від Адміністратора
+
+mongod --dbpath "c:\data\b1" --port 27010	//в окремій cmd запускати від Адміністратора //shard0000
+mongod --dbpath "c:\data\b2" --port 37010	//в окремій cmd запускати від Адміністратора //shard0001
+mongod --dbpath "c:\data\b3" --port 47010	//в окремій cmd запускати від Адміністратора //shard0002
+
+mongo --port 27000				//в окремій cmd запускати від Адміністратора
+
+sh.addShard('localhost:27010')
+sh.addShard('localhost:37010')
+sh.addShard('localhost:47010')
+
+sh.enableSharding('shop')
+
+
+
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+!!!!!!!!!!orders
+!!!!!!!!!!Ranged Sharding
+///////Проіндексувати колекції items, orders до того як відбуватиметься вставка даних(insert)
+///////Shard key - order_number
+
+use shop
+
+sh.disableBalancing("shop.orders")
+sh.addTagRange("shop.orders", { order_number : 1}, { order_number : 20}, "rangeTime1")
+sh.addTagRange("shop.orders", { order_number : 20}, { order_number : 40}, "rangeTime2")
+sh.addTagRange("shop.orders", { order_number : 40}, { order_number : 60}, "rangeTime3")
+
+sh.addShardTag("shard0000", "rangeTime1")
+sh.addShardTag("shard0001", "rangeTime2")
+sh.addShardTag("shard0002", "rangeTime3")
+
+sh.enableBalancing("shop.orders")
+db.orders.createIndex({ order_number: 1 })
+sh.shardCollection('shop.orders', { order_number: 1 })
+
+------------------------------------------------------------------------------------------------
+!!!!!!!!items
+!!!!!!!!!Zone sharding(3 зони, розбиття по категоріям)
+////Shard key - category
+
+sh.disableBalancing("shop.items")
+sh.addShardTag("shard0000", "Phone")
+sh.addShardTag("shard0001", "TabletPC")
+sh.addShardTag("shard0002", "TV-set")
+
+sh.addTagRange(
+  "shop.items",
+  { "category" : "Phone", "modelid" : MinKey },
+  { "category" : "Phone", "modelid" : MaxKey },
+  "Phone"
+)
+
+sh.addTagRange(
+  "shop.items",
+  { "category" : "TabletPC", "modelid" : MinKey },
+  { "category" : "TabletPC", "modelid" : MaxKey },
+  "TabletPC"
+)
+
+sh.addTagRange(
+  "shop.items",
+  { "category" : "TV-set", "modelid" : MinKey },
+  { "category" : "TV-set", "modelid" : MaxKey },
+  "TV-set"
+)
+
+sh.enableBalancing("shop.items")
+db.items.createIndex( { category: 1, modelid: 1 } )
+sh.shardCollection('shop.items', { category: 1, modelid: 1 })
+
+
+--------------------------------------------------------------------------------
+//Вставляти дані 
+db.items.insert()	
+db.orders.insert()	
+
+//команди для виведення інфи і перевірки шардінга
+db.stats()
+db.orders.stats()
+db.items.stats()
+db.printShardingStatus()
+
+
+
+--------------------------------------------------------------------------------
+////////
+5-те завдання 
+
+Продемонструйте роботу шардінгу (тобто що записи зберігаються на різних нодах):
+- відключити одну з ноди
+Відключаємо Shard0001 (tags "TabletPC")(нажати Ctrl+C у cmd, де виконали команду mongod --dbpath "c:\data\b2" --port 37010)
+
+- спробувати додати записи зі значеннями shard key (Ranged та Zones), що потрапляють на відключену ноду
+db.items.insert({"modelid": 11, "category": "TabletPC", "model": "Air 980", "producer": "Asus", "price": 650})
+
+db.items.insert({"modelid" : 77, "category" : "TabletPC", "model" : "SE40-esr800", "producer" : "Sony", "price" : 450 })
+db.orders.insert(
+{    
+	"order_number" : 26,
+	"date" : ISODate("2018-04-04"),
+	"total_sum" : 1050,
+	"customer" : {
+    	"name" : "Ivan",
+    	"surname" : "Ivanov",
+    	"phones" : 12344888,
+    	"address" : "Peremohy 1, Rivne, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Ivan Ivanov",
+    	"cardId" : 765321
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5beb4b29b8336cfd4d1f3540")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5beb4bc5b8336cfd4d1f3541")
+    	}
+	]
+}
+
+)
+
+- спробувати додати записи зі значеннями shard key (Ranged та Zones), що потрапляють на працюючу ноду
+db.items.insert({"modelid": 12, "category": "Phone", "model": "Redmi Note", "producer": "Xiaomi", "price": 550})
+
+db.orders.insert(
+{    
+	"order_number" : 54,
+	"date" : ISODate("2018-11-11"),
+	"total_sum" : 1200,
+	"customer" : {
+    	"name" : "Vlad",
+    	"surname" : "Kravtsov",
+    	"phones" : 93344559,
+    	"address" : "akademika Yangelia 10, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Vlad Kravtsov",
+    	"cardId" : 985323
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5beb4be9b8336cfd4d1f3546")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5beb4bf0b8336cfd4d1f3547")
+    	}
+	]
+}
+
+)
+
+- спробувати знайти всі записи з shard key для Zone, яка відповідає ноді яка працює
+db.items.find({"category": "Phone"})
+
+/яка не працює
+db.items.find({"category": "TabletPC"})
+
+- спробувати знайти записи для shard key з певного проміжку, який входить до проміжку працюючої ноди для Ranged Sharding
+db.orders.find( { order_number: { $gte: 1, $lte: 20 } } )
+
+- спробувати знайти записи для shard key з певного проміжку, який входить до проміжку ноди яка не працює для Ranged Sharding
+db.orders.find( { order_number: { $gte: 21, $lte: 40 } } )
+
+
+6) Включити відключену ноду та перевірити працездатність запитів з попереднього
+пункту
+
+Повторити команду mongod --dbpath "c:\data\b2" --port 37010 для відповідного cmd
+
+//Щоб зайти на шард і виконати команду find, в новій cmd ввести mongo --port 27010 (або 37010, або 47010)
+
+
+

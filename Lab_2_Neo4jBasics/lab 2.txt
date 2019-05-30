@@ -1,0 +1,120 @@
+match (n:customer {name:"Alex"})
+match (b:Orders {OrderNumber:1321})
+create (b)-[r:IN]->(n)
+return n,r,b
+
+
+
+
+
+ITEMS:
+create (n:Items {category : "Phone", model : "iPhone 6", producer: "Apple",price : 600})
+create (n:Items {category : "Phone", model : "S8", producer: "Samsung",price : 900})
+create (n:Items {category : "Table", producer: "UkrTable" price : 300})
+create (n:Items {category : "TV", model : "Ld67", producer: "LG", diagonal: 42, price : 1100})
+
+
+
+
+match (n:Orders {OrderNumber: 2124})
+match (b:Items {model: "iPhone 6"})
+create (b)-[r:IN]->(n)
+
+
+
+
+
+match (n:Orders {OrderNumber: 7621})
+match (b:Items {model: "S8"})
+match (g:Items {producer: "urkTable"})
+create (b)-[r:IN]->(n)
+create (g)-[h:IN]->(n)
+
+
+
+
+
+match (n:customer {name:"Jeck"})
+match (b:Items {producer: "urkTable"})
+create (n)-[:VIEW]->(b)
+
+
+
+----------------------
+TASKS
+
+
+1.Найти Items входящие в конкретный Order
+match (n:Items)-[:IN]-(:Orders {OrderNumber: 7621})
+return n
+
+
+2.Найти все Orders конкретного Customer
+match (n:Orders)-[:IN]->(:customer {name: "Jeck", surname: "qwe"})
+return n
+
+
+3.Найти все Items купленные конкретным Customer
+match (n:Items)-[:IN]-(:Orders)-[:IN]-(:customer {name: "Jeck", surname: "qwe"})
+return n
+
+
+4.Найти количество Items купленные конкретным Customer
+match (n:Items)-[:IN]-(:Orders)-[:IN]-(:customer {name: "Jeck", surname: "qwe"})
+return count(n)
+
+
+5.Найти все Items просмотренные (view) конкретным Customer
+match (:customer {name: "denial", surname: "ewqqweqwe"})-[:VIEW]->(n:Items)
+return n
+
+
+6.Найти все Items просмотренные (view), но не купленные конкретным Customer
+match (p:customer {name: "denial" ,surname: "ewqqweqwe"})-[:VIEW]->(n:Items)
+where NOT (p)-[:IN]->(n)
+return n
+
+
+
+7.Найти Items купленные вместе с конкретным Item (т.е. все Items входящие в Order вместе с данным Item)
+match (n:Items {category: "Table" , price: 300})-[:IN]->(:Orders)<-[:IN]-(b:Items)
+return n,b
+
+
+
+8.Найти Customers купивших данный конкретный Item
+match (:Items {category:"Phone", model: "iPhone 6"})-->()-->(n:customer)
+return n
+
+
+
+9.Найти все Items купленные Customer(s) купившим(и) данный конкретный Item
+match (:Items {category:"Phone", model: "iPhone 6"})-->()-->(:customer)<--()<--(h:Items)
+return h
+
+
+10.Найти все Items купленные Customer(s) который(е) Просматривали данный конкретный Item
+match (:Items {category: "Table", price: 300, producer: "UkrTable"})<--(:customer)<--()<--(n:Items)
+return n
+
+
+
+11.Реализовать рекомендательную систему, которая по определенному конкретном Item находит список Items, которые:
+были куплены вместе с этим Item
+были куплены Customer(s) купившим этот Item
+были Просмотрены Customer(s) купившим этот Item
+
+match (n:Items {category: "Phone", price: 600})-->()<--(g:Items)
+return g AS ListItems
+union
+match (n:Items {category: "Phone", price: 600})-->()-->(:customer)<--()<--(k:Items)
+return k AS ListItems
+union 
+match (n:Items {category: "Phone", price: 600})-->()-->(:customer)-->(l:Items)
+return l AS ListItems
+
+
+
+
+
+

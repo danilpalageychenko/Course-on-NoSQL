@@ -1,0 +1,166 @@
+!!!!!!!!!!!!!!Данные которые всьавлялись в БД в самом низу
+
+
+	Создаёт Keyspace с replication factor 3:
+	
+CREATE KEYSPACE LabKeyspace3
+WITH REPLICATION = { 'class' : 'NetworkTopologyStrategy', 'DC1' : 3 };
+
+-------------------------------------------------------------------------
+	Показывает все существующие keyspace:
+	
+describe keyspaces;
+
+----------------------------------------------------------------------
+	Показать разпределение по серверам
+	
+nodetool status
+nodetool status labkeyspace1   //по keyspace
+
+----------------------------------------------------------------------
+	Проверка созданных ключей 
+	Убедитесь, что пространства ключей были созданы:
+	
+SELECT * FROM system.schema_keyspaces;
+
+----------------------------------------------------------------------
+
+	Читать данные с разных keyspaces and tables:
+
+select * from labkeyspace1.items1;
+select * from labkeyspace2.items2;
+select * from labkeyspace3.items3;
+
+----------------------------------------------------------------------
+ 6. Вставте дані в створені таблиці і подивіться на їх розподіл по вузлах к
+    ластера (для кожного з кейспесов - nodetool status)
+https://docs.datastax.com/en/cql/3.1/cql/cql_reference/insert_r.html 
+https://docs.datastax.com/en/cql/3.1/cql/cql_reference/select_r.html 
+https://www.tutorialspoint.com/cassandra/cassandra_create_data.htm 
+https://www.tutorialspoint.com/cassandra/cassandra_read_data.htm 
+
+
+----------------------------------------------------------------------
+ 7. Для якогось запису з кожного з кейспейсу виведіть ноди на яких зберігаються дані
+https://docs.datastax.com/en/dse/5.1/dse-admin/datastax_enterprise/tools/nodetool/toolsGetEndPoints.html 
+
+nodetool <options> getendpoints -- <keyspace> <table> key
+
+nodetool getendpoints labkeyspace1 items1 "Phone"
+nodetool getendpoints labkeyspace1 items1 "Phone:600.0:1"
+nodetool getendpoints labkeyspace1 items1 id=1   ????? ВОзможно но не точно
+
+----------------------------------------------------------------------
+ 8. Для кожного з кейспейсів відключивши одну з нод визначить чи можемо гарантувати 
+    strong consistency, для читання та запису, змінюючи рівень consistency
+https://docs.datastax.com/en/cql/3.1/cql/cql_reference/consistency_r.html 
+
+
+Вывести уровень согласованности:
+strong consistency
+
+Изминить уровень согласованности:
+CONSISTENCY level
+
+Доступные уровни констисести:
+https://docs.datastax.com/en/archived/cassandra/2.0/cassandra/dml/dml_config_consistency_c.html
+
+!!!Как для чтения, так и для записи уровни согласованности ANY , ONE , TWO , and THREE
+!!!считаются слабыми, тогда как QUORUM and ALL считаются сильными.
+
+!!!Strong consistency: EACH_QUORUM, LOCAL_QUORUM
+
+!!!Как для чтения, так и для записи уровни согласованности ANY , ONE , TWO , and THREE
+!!!считаются слабыми, тогда как QUORUM and ALL считаются сильными.
+
+EACH_QUORUM - Используется в нескольких кластерах центров обработки данных для строгого 
+поддержания согласованности на одном уровне в каждом центре обработки данных. Например, 
+выберите этот уровень, если вы хотите, чтобы чтение завершилось неудачно, когда центр 
+обработки данных не работает, и в этом центре обработки данных невозможно получить 
+значение QUORUM.
+
+LOCAL_QUORUM - Используется в нескольких кластерах центров обработки данных со стратегией 
+размещения реплики с учетом рэка, такой как NetworkTopologyStrategy, и правильно 
+сконфигурированной меткой. Используется для поддержания согласованности локально 
+(в пределах единого центра обработки данных). Может использоваться с SimpleStrategy.
+
+---------------------------------------------------------------------- 
+ 9. Зробить так щоб три ноди працювали, але не бачили одна одну по мережі (
+    відключіть зв'язок між ними)
+
+	
+----------------------------------------------------------------------
+ 10. Для кейспейсу з replication factor 3 задайте рівень consistency рівним 1. 
+     Виконайте запис одного й того самого значення, з рівним primary key, але 
+	 різними іншими значенням на кожну з нод
+
+	 
+----------------------------------------------------------------------
+ 11. Об’єднайте ноди в кластер і визначте яке значення було прийнято кластером 
+     та за яким принципом
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+---------------------------Вставленные данные:----------------------------- 
+	 
+INSERT INTO labkeyspace1.items1 (id, category, model, producer, price)
+VALUES (1, 'Phone', 'iPhone6', 'Apple', 600.0);
+
+INSERT INTO labkeyspace1.items1 (id, category, model, producer, price)
+VALUES (2, 'Phone', 'L Bello', 'LG', 350.0);
+
+INSERT INTO labkeyspace2.items2 (id, category, model, producer, price)
+VALUES (3, 'TabletPC', 'ThinkPad E531', 'Lenovo', 700.0);
+
+INSERT INTO labkeyspace2.items2 (id, category, model, producer, price)
+VALUES (4, 'TabletPC', 'Aspire E15 E5-576G', 'Acer', 500.0);
+
+INSERT INTO labkeyspace3.items3 (id, category, model, producer, price)
+VALUES (5, 'TV-set', 'TX40-esr500', 'Panasonic', 550.0);
+
+INSERT INTO labkeyspace3.items3 (id, category, model, producer, price)
+VALUES (6, 'TV-set', '32s1750ev', 'Toshiba', 800.0);
+
+UPDATE labkeyspace3.items3 SET properties = properties + {'color': 'black'} 
+WHERE id = 6 AND category = 'TV-set' AND price=800.0;
+
+UPDATE labkeyspace3.items3 SET properties = properties + {'color': 'white'} 
+WHERE id = 5 AND category = 'TV-set' AND price=550.0;
+
+UPDATE labkeyspace2.items2 SET properties = properties + {'TTL Battery': '6 hours'} 
+WHERE id = 3 AND category = 'TabletPC' AND price=700.0;
+
+UPDATE labkeyspace2.items2 SET properties = properties + {'TTL Battery': '5 hours'} 
+WHERE id = 4 AND category = 'TabletPC' AND price=500.0;
+
+UPDATE labkeyspace1.items1 SET properties = properties + {'Type-SIM': 'Micro-SIM'} 
+WHERE id = 2 AND category = 'Phone' AND price=350.0;
+
+UPDATE labkeyspace1.items1 SET properties = properties + {'Type-SIM': 'Nano-SIM'} 
+WHERE id = 1 AND category = 'Phone' AND price=600.0;
+

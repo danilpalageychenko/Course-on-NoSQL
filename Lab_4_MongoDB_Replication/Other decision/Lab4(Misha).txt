@@ -1,0 +1,62 @@
+1) Прочитайте про репликацию данных в MongoDB
+http://docs.mongodb.org/manual/core/replication-introduction/
+
+Задание:
+1) Настроить репликацию в кофигурации: Primary with Two Secondary Members (все ноды могут быть запущены на одной машине) - http://docs.mongodb.org/manual/core/replica-set-architecture-three-members/ 
+	Deploy a Replica Set for Testing and Development Turorial - http://docs.mongodb.org/manual/tutorial/deploy-replica-set-for-testing/
+	Для сохранения БД и данных предыдущего задания можете постараться выполнить Convert a Standalone to a Replica Set - http://docs.mongodb.org/manual/tutorial/convert-standalone-to-replica-set/ 
+
+rsconf = {
+  _id: "rs1",
+  members: [
+    {
+     _id: 0,
+     host: "192.168.43.47:27017"
+    },
+    {
+     _id: 1,
+     host: "192.168.43.204:27017"
+    },
+    {
+     _id: 2,
+     host: "192.168.43.43:27017"
+    }
+   ]
+}
+
+2) Продемонстрировать запись данных на primary node с разными Write Concern Levels (http://docs.mongodb.org/manual/core/write-concern/):
+	Unacknowledged
+	Acknowledged
+	Journaled
+	Replica Acknowledged (http://docs.mongodb.org/manual/core/replica-set-write-concern/)
+
+db.items.insert(
+   { item: "envelopes", qty : 1022, type: "Clasp1" },
+   { writeConcern: { w: 3, j:true, wtimeout: 5000 } }
+)
+
+3) Продемонстрировать два Read Preference Modes: чтение с primary и secondary node (http://docs.mongodb.org/manual/core/read-preference/)
+
+db.products.find().readPref('nearest', [ { 'dc': 'east' } ])
+db.products.find().readPref('primaryPreferred')
+
+primaryPreferred
+secondary
+secondaryPreferred
+nearest
+
+4) Воспользуйтесь всеми уровнями readConcern: { level: <"majority"|"local"|"linearizable"> }
+
+db.products.find().readConcern("majority")
+db.products.find().readConcern("majority").readPref('nearest', [ { 'dc': 'east' } ])
+
+5) Продемонстировать перевыбор primary node в случае выхода из строя текущей primary (Replica Set Elections) - http://docs.mongodb.org/manual/core/replica-set-elections/  
+	а так же что после возобновления работы старой primary на нее будут реплицированы новые данные, которые появились во время ее простоя
+
+6) Сэмулируйте eventual consistency с помощью установки задержки репликации для реплики https://docs.mongodb.com/manual/tutorial/configure-a-delayed-replica-set-member/ 
+
+Описание дополнительных команд Replication Reference -  http://docs.mongodb.org/manual/reference/replication/ 
+
+
+
+

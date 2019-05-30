@@ -1,0 +1,114 @@
+Ролі кожного з компів:
+Вітя(PRIMARY node - mongo0.example.com(192.168.43.173))
+Даша(SECONDARY node - mongo1.example.com(192.168.43.224))
+Ксюша(SECONDARY node - mongo2.example.com(192.168.43.21))
+
+Всі запускають 2 командні строки(в режимі Адміністратора, НЕ PowerShell)
+Cmd, де запускається mongod - розгортається на весь екран і весь час висить на задньому фоні
+Cmd де запускається mongo - там відбуваються команди find, insert, rs.status() і тд
+Зупинити процес mongod - Ctrl+C, вийти з mongo shell - exit
+
+Вітя:
+Створити папки для зберігання баз даних і ведення журналу
+md "\data\db" "\data\log"
+
+Запустити процес mongod(створити нову репліку rs0) в одній командній строці
+mongod --replSet "rs0" --bind_ip mongo0.example.com
+
+В іншій командній строці виконати
+mongo mongo0.example.com
+
+rs.initiate()
+rs.conf()
+
+Даша:
+Створити папки для зберігання баз даних і ведення журналу
+md "\data\db" "\data\log"
+
+Запустити процес mongod(створити нову репліку rs0) в одній командній строці
+mongod --replSet "rs0" --bind_ip mongo1.example.com
+
+В іншій командній строці виконати
+mongo mongo1.example.com
+
+Ксюша:
+Створити папки для зберігання баз даних і ведення журналу
+md "\data\db" "\data\log"
+
+Запустити процес mongod(створити нову репліку rs0) в одній командній строці
+mongod --replSet "rs0" --bind_ip mongo2.example.com
+
+В іншій командній строці виконати
+mongo mongo2.example.com
+
+Вітя:
+Додати 2 учасників до репліки
+rs.add( { host: "mongo1.example.com:27017", priority: 1, votes: 1 } )
+rs.add( { host: "mongo2.example.com:27017", priority: 1, votes: 1 } )
+rs.status()
+
+
+Якщо ці команди пройшли без помилок, ВСІМ ввести на своїх компах rs.status()
+Все ОК якщо відобразило PRIMARY mongo0.example.com, SECONDARY mongo1.example.com, SECONDARY mongo2.example.com
+
+Процес создания закончин
+-------------------------------------------------------------------------------------------------------
+
+Вітя:
+(Це все виконується в mongo shell у cmd, яка призначена для введення команд)
+Створити нову базу даних
+use items
+
+Додати нові записи(документи) в БД:
+db.items.insertMany([{"category": "Phone", "model": "iPhone6", "producer": "Apple", "price": 600}, 
+{"category": "Phone", "model": "L Bello", "producer": "LG", "price": 450},
+{"category": "TabletPC", "model": "ThinkPad E531", "producer": "Lenovo", "price": 700},
+{"category": "TabletPC", "model": "Aspire E15 E5-576G", "producer": "Acer", "price": 500},
+{"category": "TV-set", "model": "TX40-esr500", "producer": "Panasonic", "price": 550},
+{"category": "TV-set", "model": "32s1750ev", "producer": "Toshiba", "price": 800}])
+
+Приблизно за 30 секунд ці дані реплікуюються(скопіюються) на інші 2 компи
+db.items.find()
+
+----------------------------------------------------------------------------------------------------------
+
+Вітя:
+Вимкнути PRIMARY node(тобто зупинити процес mongod)
+У вікні командної строки, яка розгорнута на весь екран нажати Ctrl+C
+
+Даша:
+Почекати секунд 20-30 від того моменту як Вітя зупинив процес mongod і в mongo shell ввести команду
+rs.status()
+Можливі 2 ситуації, найбільш імовірна - через 20 секунд комп Даші стане SECONDARY node, комп Ксюші стане PRIMARY node, Вітя не відображається, бо вимкнено mongoDB
+(інша ситуація навпаки: Даша - PRIMARY, Ксюша - SECONDARY)
+
+
+----------------------------------------------------------------------------------------------------------
+Ксюша:
+Почекати секунд 20-30 від того моменту як Вітя зупинив процес mongod і в mongo shell ввести команду
+rs.status()
+
+Даша:
+Вимкнути SECONDARY node(тобто зупинити процес mongod)
+У вікні командної строки, яка розгорнута на весь екран нажати Ctrl+C
+
+Ксюша:
+СУПЕРМЕГАВАЖЛИВИЙ момент - за 5 секунд треба встигнути виконати команду insert на PRIMARY node, коли вже 2 інші компи зупинили процес mongod
+db.items.insert({"category": "TV-set", "model": "SE40-esr800", "producer": "Sony", "price": 450})
+db.items.insert({"category": "TabletPC", "model": "ThinkPad N320", "producer": "Lenovo", "price": 750})
+(один з двох інсертів на вибір)
+
+db.items.insert({"category": "Phone", "model": "Red 690", "producer": "Apple", "price": 470})
+db.items.find().readConcern("linearizable").count()
+Цей інсерт пройде, приблизно через 3-10 секунд нода стане SECONDARY(тоді вже інсерти працювати не будуть)
+
+Виконати наступні 3 команди:
+db.getMongo().setSlaveOk()
+use orders
+db.items.find().readConcern("majority")
+
+Показати інші види Read Concern(majority виводить коректні дані, local - всі, linearizable - хз)
+db.items.find().readConcern("local")
+db.items.find().readConcern("linearizable")
+
+На цьому кінець того, що здавали Супруненко і компанія, якщо будуть ще якісь завдання, будемо розбиратись і робити по ситуації:)

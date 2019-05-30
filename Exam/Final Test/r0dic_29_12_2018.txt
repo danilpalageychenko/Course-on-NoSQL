@@ -1,0 +1,796 @@
+[*]  - 
+???? - 
+
+для split-brain формула = n/2 + 1
+
+
+1. A JMS message is composed of which of the following parts
+[*]	Header
+[*]	Properties
+[*]	Body
+	Footer
+	None of these
+
+2. Choose correct statement about RDD
+	RDD is a database
+	None
+	RDD is a program paradigm
+[*]	RDD is a distributed data structure
+
+3. Data locality feature in Hadoop means
+	relocated the data from one node to another
+	store the same data across multiple nodes
+[*]	co-locate the data with the computing nodes
+	disributed the data across multiple nodes
+
+4. How does Hadoop process large volumes of data
+[*]	Hadoop ships the code to the data instead of sending the data to the code
+	Hadoop was specifically designed to process large amount of data by taking advantage of special hardware
+	Hadoop uses sophisticated caching techniques on name node to speed processing of data
+	Hadoop uses a lot of machines in parallel. This optimizes data processing.
+
+
+5. If we increase the block size stored in HDFS without increasing the number of files, then the memory required by namenode
+[*]	Decreases
+	Demains unchanged
+	Increases
+	May or may not increase
+
+6. In a Hadoop cluster, what is true for a HDFS block that is no longer avaliable due to corruption or mathine failure
+	It is lost for ever
+[*]	It can be replicated form its alternative locations to other live machines
+	The Mapreduse job process runs ignoring the block and the data stored in it
+	The namenode allows new client request to keep trying read it
+
+7. Point out he wrong stagements:
+[*]	Spark is intended to replace the Hadoop stack
+	Spark was designed to read and write data from and to HDFS as well as other storage system
+	Hadoop users who have already deployed or are planning to destroy Hadoop YARN can simply run Spark on YARN
+	None of the mentioned
+
+8. Select the earliest point at which Paxos has agreed on a value. There is a copy of the Paxos algorithm below
+[*]	A majority send accept_ok messages with the same n
+	A majority send accept_ok messages
+	A proposer reseives prepare_ok message from a majority
+	A majority of nodes receive deceded message
+
+9. Select all Spark RDD actions:
+[*]	collect
+[*]	foreach
+[*]	saveAsTextFile
+[*]	reduce
+	map
+	groupBy
+	flatMap
+	filter
+
+10. Select all Spark RDD transformation:
+	collect
+	foreach
+	saveAsTextFile
+	reduce
+[*]	map
+[*]	groupBy
+[*]	flatMap
+[*]	filter
+
+11. Select key features of NoSQL DBs:
+[*]	Aggregate orientation(Совокупная ориентация)
+[*]	Shemaless
+[*]	Running well on cluster(Хорошо работать на кластере)
+	Using the relational model(Использование реляционной модели)
+	Transaction support(Поддержка транзакции)
+	Using SQL(Использование SQL)
+
+12. Spark Core Abstraction
+[*]	RDD
+	Block
+	DataStream
+	DataSet
+
+13. The client reading the data from HDFS filesystem in Hadoop
+[*]	gets only the block locations form the namenode
+	gets the block location from the datanode
+	gets the data from the namenode
+	gets both the data and block location form the namenode
+
+14. The current limiting factor to the size of a Hadoop cluster is
+[*]	upper limit of the RAM in namenode
+	4000 data nodes
+	Upper limit of the network bandwidth
+	Upper limit of the Map/Reduse jobs number
+
+15. The file in Namenode which stores the information mapping the data block location with file name is
+[*]	fsimage
+	nameimage
+	image
+	dsfimage
+
+16. The information mapping data blocks with their corresponding files is stored in
+[*]	Namenode
+	Node mananger
+	YARN
+	Application mananger
+	Data node
+
+17. The main role of the secondary node is to
+[*]	Copy the filesystem metadata from primary namenode
+	Copy the filesystem metadata from primary namenode to backup
+	Monitor if the primary namenode is up and running
+	Periodically merge the namespace image with the edit log
+
+18. The namenode knows that datanode is active using a mechanism knows as
+[*]	heartbeats
+	active-pulse
+	database
+	h-signal
+
+19. The output of a mapper task is
+[*]	The Key-value pair of all the records from the input split processed by the mapper
+???	The Key-value pair of all the records of the dataset
+	The number of rows processed by the mapper task
+	Only the sorted Keys from the input split
+
+20. What order is used in Git
+[*]	partial order
+	total order
+	cyclic order
+	partial cyclic order
+
+21. When a client communicates with HDFS file system, it needs to communicate with
+[*]	both the namenode and datanode
+	only the data node
+	only the namenode
+	None of these
+
+22. Which MapReduce stage serves as a barrier, where all previous stages must be completed before it may proceed?
+[*]	Combine
+	Reduce
+	Map
+????Group (a.k.a. shuffle)
+
+23. Which of the following are among the duties of the Data Nodes in HDFS
+	Manage the file system namespace
+[*]	Store and retrive blocks when told to by clients or the NameNode
+	None of the options is correct
+	Maintain the file tree and metadata for all
+
+24. Which of the microservices pattern detect failures and encapsulated logic of preventing a cascading failure?
+[*]	Circuit breaker
+
+25. Which of the following describes messaging communication?
+	synchronous (этот ответ правильные если multiplechoice)
+[*]	guaranted delivery of messaging
+[*]	scalability
+[*]	asynchronous
+
+26. Which of the following is NOT a characteristic shared by Hadoop and Spark
+	Both are data processing platforms
+[*]	Both have their own file system
+	Both use open source APIs to link between different tools
+	Both are cluster computing environments
+
+27. Which of the following statements are correct
+[*]	Spark can run on the of Hadoop(Spark может работать на вершине Hadoop)
+[*]	Spark can process data stored in HDFS(Spark может обрабатівать данніе хранящие в HDFS)
+	Spark can use only YARN as resource manangement layer(Spark может использовать только YARN в каестве уровня управления ресурсами)
+	All of the above(Все вишеперечисленное )
+
+28. Which type of processing Apache Spark can handle
+	Batch Processing
+	Interactive Processing
+	Stream Processing
+	Graph Processing
+[*]	All of the above
+
+29. Why might a programmer decide to supply an optional Combine function
+[*]	To eagerly pre-aggregate Map result in order to reduce the number of intermediate keys and values send to Group and subsequently Reduce.
+	To produce a correct result result when the Reduce function requires a grouped or sorted list of value associated with each key.
+	To eagerly pre-aggregate Map result in order to reduce the number of intermediate keys and values sent to Group and subsequently Reduce.
+
+30. You have following Spark RDD
+val data = Array(1, 2, 3, 4, 5)
+val rdd = sc.parallelize(data)
+val res = rdd.filter(x => x > 3).map(x => x * 2).reduce(_*_)
+What will be res value?
+[*]	80
+
+31. В 2РС транзакции принимают участие три сервера Q1, Q2,Q3 и координатов Q0 Выберите допустимые комбинации состояний в которых могут находиться сервера а-abort, c-commit i-query, w-wait
+[*]	q1=w q2=w q3=a
+[*]	q1=i q2=i q3=i
+[*]	q1=c q2=c q3=c
+[*]	q1=w q2=w q3=w
+[*]	q1=a q2=a q3=a
+	q1=a q2=c q3=a
+	q1=w q2=c q3=a
+	q1=w q2=i q3=a
+	q1=c q2=c q3=w
+	q1=w q2=i q3=c
+
+32. В каком порядке выполняются шаги в Map/Reduce?
+	Мар -> Shuffle -> Partition -> Combine -> Reduce
+	Map -> Shuffle -> Combine -> Partition -> Reduce
+	Map -> Partition -> Combine -> Shuffle -> Reduce
+[*]	Map -> Combine -> Partition -> Shuffle -> Reduce
+
+33. В каком из слоев приложения (Application Layer) следует размещать бизнес-логику
+	Repositort/persistence layer
+	service layer
+	presentation layer
+[*]	domain layer
+
+"Уровень предметной области (Domain Layer) или Уровень модели (Model Layer) – Отвечает за представление понятий прикладной предметной области – Содержит логику поведения предметной области (business rules) – Этот уровень является главной, алгоритмической частью программы"
+
+34. В кластере есть 7 узлов на которые реплицируються данные. На 3 из них выполянестья запись данных. С какого минимального количества узлов необходимо считывать данные для обеспечения strong consistency. Введите число
+[*]	5
+
+N-число узлов на которые реплицируют данные, W - число узлов от которых ожидается подтверждение, R-числоузлов к которым обращается клиент R+W>N - strong consistency, R+W<=N - eventual consistency
+
+35. В кластере есть 17 узлов на которые реплицируються данные. На 7 из них выполняеться запись данных. На какое минимальное количество узлов необходимо записывать даные для обезпечения strong consistency
+[*]	11
+
+36.	В кластере есть 17 узлов на которые реплицируються данные. С 2 из них выполняеться чтение данных. На какое минимальное количество узлов необходимо записывать даные для обезпечения strong consistency
+[*]	16
+
+37.	В распределении двухфазной транзакции (2PC) принимают участие 3 сервера (координатор запущен на одном из них). Каким суммарным количеством сообщений им необходимо обменяться?
+[*]	8
+
+38.	В распределенной двухфазной транзакции принимают участие 5 серверов. Каким суммарным количеством сообщений им необходимо обменяться?
+[*]	20
+
+"Двухфазовая фиксация (2PC - 2 Phase Commit) - каждый участвующий в ней узел, прежде чем зафиксировать транзакцию, подтверждает, что он готов сделать это. Если все узлы согласны зафиксировать транзакцию, то все относящиеся к ней действия реально выполняются; если один из узлов отказывается зафиксировать свою часть транзакции, то и все остальные узлы вынуждены прервать данную транзакцию. 2PC опирается на следующие фундаментальные правила (Рисунок 13): 1. Если хотя бы один узел отказывается зафиксировать транзакцию (голосует за ее прерывание), то распределенная транзакция прерывается на всех участвующих в ней узлах. 2. Если все узлы голосуют за фиксацию транзакции, то она фиксируется на всех участвующих в ней узлах. В простейшем варианте работа 2PC выглядит следующим образом:"
+
+39. протоколе Paxos принимают участие 4 сервера. Каким минимальным количеством сообщений в наилучшем случае им необходимо обменяться?
+[*]	12
+
+40. В системе обмна сообщениями есть Topic у которого два подписчика sub1 и sub2, а так же Queue у которой так же 2 потребителя cons1 cons2/ В Topic и Queue приходят по 2 сообщения. Сколько сообщений sub1 sub2 cons1 cons2 могут получить
+[*]	sub1-2, sub2-2, cons1-2 cons2-0
+[*]	sub1-2, sub2-2, cons1-1 cons2-1
+[*]	sub1-2, sub2-2, cons1-0 cons2-2
+	sub1-0, sub2-2, cons1-1 cons2-1
+	sub1-2, sub2-2, cons1-0 cons2-1
+	sub1-2, sub2-2, cons1-1 cons2-0
+	sub1-1, sub2-1, cons1-2 cons2-0
+	sub1-2, sub2-0, cons1-1 cons2-1
+
+"• Publish–subscribe pattern – is a one-to-many model – messages are published to ""topics"" or named logical channels – all subscribers to a topic will receive the same messages – twitter, database triggers, mailing lists, RSS. • Receipt notification - A publisher may need to know when some or all subscribers have received a message."
+
+41. В соответствии с Application Layering architecture, какие напревления взаимодествия (вызвов) не допускаються?
+[*]	Domain -> Repository
+	Web -> Service
+	Web -> Domain
+	Service -> Repository
+	Service -> Domain
+	Repository -> Domain
+[*]	Web -> Repository
+[*]	Service -> Web
+
+42. Выберите корректные утверждения касательно монолитной и микросервисной архитектур
+[*]	Приложения с монолитной архитектурой сложно масштабировать
+[*]	Приложение с микросервисной архитектурой может включать сервисы написанные с помощью разных языков и платформ
+	В приложение с монолитной архитектурой легче вносить изменения и выпускать его новые версии
+[*]	Приложение с микросервисной архитектурой более устойчиво к падению одного из сервисов
+	Приложение с микросервисной архитектурой сложно масштабировать
+
+"Scaling the application can be difficult - a monolithic architecture is that it can only scale in one dimension"
+
+43. Выберите корректные утверждения про Event Sourcing
+[*]	Не хранит в БД конкретного состояния объекта предметной области
+[*]	????Позволяет ускорить запись в БД из-за отсутствия необходимости в использовании блокировок
+	Позволяет ускорить выполнение сложных запросов к БД
+	Использует оптимистическую блокировки для обновления в БД состояния объекта предметной области
+
+"В случае с Event Sourcing мы тоже оперируем с состоянием сущности. Но в отличии от обычной модели мы это состоянием не храним, а воспроизводим каждый раз при обращении. https://habr.com/post/146429/"
+
+44. Выберите правильное утверждение
+	протокол Paxos подвержен split-brain problem
+	протокол Paxos требует для своего функционирования всех нод
+	протокол Raft подвержен split-brain problem
+[*]	протокол 2PC требует для своего функционирования всех нод
+[*]	протокол Raft требует наличие лидера
+[*]	протокол Raft требует для своего функциоирования кворума
+
+"Raft: 1. Leader election 2. Normal operation 3. Safety and consistency 4. Neutralize old leaders 5. Client protocol 6. Configuration changes"
+
+45. Выберите правильное утверждение о RDD
+	RDD - это работа с картой / сокращением
+	RDD - это база данных
+	RDD - это парадигма програмирования
+[*]	RDD - это распределенная структура данных
+
+46. Выберите свойства, которым соответствует система контроля версий Git
+	является централизованой (единое хранилище данных)
+	использует пессимистическую блокировку
+	в случае наличия конфликтов заменяет более раннюю версию данных более новыми
+[*]	является распределенной
+[*]	использует оптимистическую блокировку
+
+47. Выберите утверждения верные для асинхронной репликации
+	Замедляет запись
+[*]	Приводит к появлению Inconsistency window
+	Во время записи приложения ждет пока данные скопируються на все реплики
+[*]	Во время записи приложение НЕ ждет пока данные скопируются на все реплики
+
+48. Выберите утверждения верные для синхронной репликации
+[*]	Замедляет запись
+[*]	Во время записи приложения ждет пока данные скопируються на все реплики
+	Приводит к eventual consistency
+[*]Обеcпечивает strong consistency
+
+49. Выделите верные утверждения касательно шардинга и репликации
+[*]	Шардинг позволяет ускорить запись и чтение данных
+[*]	Репликация позволяет повысить отказоустойчивость системы
+	Репликация позволяет ускорить запись и чтение данных
+[*]	Репликация может приводить к несогласованности данных
+	Шардинг может приводить к несогласованности данных
+	Шардинг позволяет повысить отказоустойчивость системы
+[*]	Шардинг совместно с репликацией позволяют ускорить запись и чтение данных, а так же повысить отказоустойчивость системы
+
+50. Для предотвращения "Split-brain Problem" сколько нод должно продолжать функционирование в кластере из 7 нод? Введите число
+[*]	4
+
+(n+1)/2
+
+51. Для чего используеться Combine function в Map/Reduce?
+	Упрощение работы Partition function
+	Оптимизации работы Map function
+	Замена логики работы Reduce function
+[*]	Уменшения количества пересылаемых по сети данных
+
+52. Если кластер распадается на несколько частей, заказчику важно чтобы каждая часть продолжала функционировать независимо друг от других. Какое из свойств необходимо заказчику?
+	СА
+[*]	АР
+	Это невозможно
+	СР
+	САР
+
+"В CAP говорится, что в распределенной системе возможно выбрать только 2 из 3-х свойств: C (consistency) — согласованность. Каждое чтение даст вам самую последнюю запись. A (availability) — доступность. Каждый узел (не упавший) всегда успешно выполняет запросы (на чтение и запись). P (partition tolerance) — устойчивость к распределению. Даже если между узлами нет связи, они продолжают работать независимо друг от друга."
+
+53. Как называеться следующее свойство combine function в Map/Reduce: combine(key,[combine(key,valuesArray)]) == combine(key, valuesArray)
+	identical
+[*] idempotent
+	associative
+	commutative
+
+54. Какая из осей Scale cube (X/Y/Z scaling) соответствует подходу построения приложения на основе "Microservice Architecture"?
+	X-axis scaling(Вопрос) фраза: "scaling consists of running multiple copies of an application behind a load balancer"
+	Z-axis scaling(Вопрос)обеспечивает Data partitioning (sharding)
+[*]	Y-axis scaling(Вопрос)соответствует подходу построения приложения на основе "Microservice Architecture"
+	Никакая
+
+55. Какая из осей Scale cube (X/Y/Z scaling) обеспечивает Data partitioning (sharding)?
+Никакая
+	Y-axis scaling(Вопрос)соответствует подходу построения приложения на основе "Microservice Architecture"
+[*]	Z-axis scaling(Вопрос)обеспечивает Data partitioning (sharding)
+	X-axis scaling(Вопрос) фраза: "scaling consists of running multiple copies of an application behind a load balancer"
+
+56. Какая из перечисленных фаз позволить виполнять фазу Reduce паралельно на разных нодах?
+	map
+[*]	partition
+	combine
+	shuffle
+
+57. Какие из способов предотвращают lost update problem?
+[*]	Serializable transaction isolation level
+[*]	Optimistic locking
+[*]	Read Uncommitted transaction isolation level
+[*]	Repeatable Read transaction isolation level
+[*]	Read Committed transaction isolation level
+
+58. Какие из паттернов позволяют микропроцессорам явно не прописывать адреса других микросервисов для ваимодействия между собой
+	Circuit Breaker
+	Messaging
+[*]	Service Discovery
+	Distributed tracking
+
+59. Какие из перечисленных проблем есть в 2РС протоколе?
+[*]	является блокирующим протоколом
+[*]	требует, что бы функционировали все ноды
+	требует, что бы функционировало большинство нод
+	в случае network partition каждый из сегментов может принять разные решения
+	может приводить к нарушению consistency
+
+"Проблема 2PC • Ноды не знают как проголосовали другие ноды, они знают только свой результат • Если координатор перед тем как падает успевает сообщить хоть одной из нод свое решение, то по этому решению можно восстановить решение координатора • Если падают координатор и нода получившая сообщение от него, то их решение и результат остаются неизвестными"
+
+60. Какие из перечисленных проблем есть в 3РС протоколе?
+[*]	может приводить к нарушению consistency
+[*]	в случае network partition каждый из сегментов может принять разные решения
+	требует чтобы функционировало большинство нод
+	являеться блокирующим протоколом
+	требует чтобы функционировали все ноды
+
+61. Какие из шагов в Map/Reduce является опциональными?
+[*]	Finalize(Close)(Завершить(Закрыть))
+[*]	Combine(Скомбинировать)
+[*]	Partition(Раздел)
+	Map(Карта)
+	Group (a.k.a. 'shuffle')(Группа)
+	Reduce(Уменшить)
+
+62. Какие из функций могут выступать в качестве Partitioner функции для MapReduce в случае K-редьюсов?
+[*]	hash(Key)%K
+[*]	if( N1 > Key ) return 0; if(N2 >= Key >= N1) return 1;...
+	random()
+	random() % K
+	hash(Key)
+	hash(Key,Value)
+	hash(Key,Value) % K
+
+63. Каким должно быть значение X и Y в vector stamp на Node2 чтобы не было Write-write conflict Node1 - vector stamp: [blue: 1, green: 3, black: 2] Node2 - vector stamp: [blue: X, green: 1, black: Y] Введите значение X и Y разделенные пробелом
+[*]	1 2
+[*]	?????1 1
+
+64. Какое из выражений аналогично следующей конструкции map.replace (key, oldvalue, newvalue)
+[*]	if(map.get(key)==oldvalue) map.put(key, newvalue)
+	if(key==oldvalue) map.put(key, newvalue)
+	if(newvalya==oldvalue) map.put(key, newvalue)
+	if(oldvalue==newvalue) map.put(key, newvalue)
+
+"The method Map.replace(key, oldValue, newValue) replaces the value associated with the given key only if it is currently mapped to the oldValue. K key: key for which replace the value V oldValue: value expected to be associated with the key V newValue: value to associate with the key http://farenda.com/java/java-util-map-replace-key-oldvalue-newvalue/"
+
+65. Какой из слоев приложения непосредствено взаимодействует с хранилищем данных?
+	service layer
+[*]	repository/presistence layer
+	presentation layer
+	domain layer
+
+66. Какой из типов приведенных NoSQL БД не является маштабируемым?
+	Document
+[*]	Graph
+	Column-Family
+	Key-Value
+
+67. Какой из типов шардинга позволяет более эффективно выполнять агрегирующие операции над данными имеющими близкие значения
+	Domain-specific rules(Правила для домена)
+	Никакой
+	Hash Based
+	Geo-location(Гео-место)
+[*]	Range Based(На основе диапазона)
+
+68. Какой из уровней изоляции транзакций может заменить Optimistic locking?
+	READ UNCOMMITTED
+	REPEATABLE READ
+	READ COMMITTED
+	Никакой
+[*]	SERIALIZABLE
+
+Если две одновременные транзакции попытаются обновить одну и туже строку, то это будет не возможно. В таком случае PostgreSQL принудит транзакцию, вторую, да и все последующие, что пытались изменить строку к отмене (откату — ROLLBACK). https://habr.com/post/317884/
+
+69. Какой из типов приведенных NoSQL БД не является масштабируемым?
+	Key-Value
+[*]	Graph
+	Document
+	Column-Family
+
+70. Какой комбинацией свойств можно охарактеризовать реляционные БД, согласно CAP-теореме?
+[*]	СА(Вопрос)реляционные БД или Neo4J
+	САР
+	АР(Вопрос)Cassandra
+	СР(Вопрос)MongoDB
+
+71. Какой комбинацией свойств можно охарактеризовать Cassandra, согласно САР-теореме?
+	СР(Вопрос)MongoDB
+[*]	АР(Вопрос)Cassandra
+	САР
+	СА(Вопрос)реляционные БД или Neo4J
+
+72. Какой комбинацией свойств можно охарактеризовать MongoDB, согласно САР-теореме?
+[*]	СР(Вопрос)MongoDB
+	АР(Вопрос)Cassandra
+	САР
+	СА(Вопрос)реляционные БД или Neo4J
+
+73. Какой комбинацией свойств можно охарактеризовать Neo4J, согласно САР-теореме?
+[*] СА(Вопрос)реляционные БД или Neo4J
+	СР(Вопрос)MongoDB
+	АР(Вопрос)Cassandra
+	САР
+	Никакой
+
+74. Какой минимальный уровень изоляции транзакций обеспечивает отсутствие грязного чтения данных (Dirty reads) из реляционной БД?
+	Serializable
+	Read Uncommitted
+[*]	Read Committed
+	Repeatable Read
+
+75. Кластер Apache Cassandra состоит из 8 нод. Replication Fuctor равен 5.Укажите через пробел: -сколько процентов данных содержит каждая нода; -со скольких нод надо читать данные (Read Consistency) для обеспечения strong consistency; если Write Consistency равно 3; -сколько нод кластера может выйти из строя без потери данных.
+[*]	62.5 3 2 (5/8=62.5%)
+
+5/8 * 100 = 62.5
+3 + R > 5 then R = 3
+
+76. Кластер Apache Cassandra состоит из 5 нод. Replication Fuctor равен 3.Укажите через пробел: -сколько процентов данных содержит каждая нода; -со скольких нод надо читать данные (Read Consistency) для обеспечения strong consistency, если Write Consistency равен 2; -сколько нод кластера может выйти из строя без потери данных.
+[*]	60 2 1 (3/5=60%)
+
+1. -
+2. ReplFactor(N) - max(WorR)
+3. W - 1
+4. = R
+5. (N/clusterSize) * 100%
+
+77. Когда мы в реляционной БД настраиваем constraint, указывая что значения поля должно быть больше 0, какое из свойств ACID используем? Укажите первую заглавную букву
+[*]	C
+
+78. Напишете вместо трех точек в каком виде/ формате combine должен возвращать данные map: (k1,v1) -> [(k2,v2)] combine: (k2,[v2]) -> [...] reduce: (k2,[v2]) -> [(k3,v3)]
+[*]	[(k2,v2)]
+
+79. На каком их слоев приложения (Application layer) должна быть реализована поддержка распределенных транзакций
+	domain layer
+	presentation layer
+[*]	service layer
+	repository/presistence layer
+	web layer
+
+80. Почему програмист может решить дополнительную функцию Combine
+	Для полуения правильного результата, когда функция уменьшения требует группированного или отсортированного списка значений, связанных с каждым ключом
+[*]	Желательно предварительно агрегировать результаты Карты, тобы уменьшить количество промежуточных ключей и значений, отправленных Группе, а затем уменьшить.
+	Чтобы создать более сбалансированое назначение промежутоных результатов отдельным узлам сокращения
+
+81. При какых уровнях согласованости клиент гарантированно будет видеть результаты своей записи
+[*]	strong consistency(сильная согласованость)
+	eventual consistency(возможная согласованость)
+[*]	read your writes(читать ваши записи)
+	monotonic reads(монотонные чтeния)
+
+82. При каком из видов репликации появляется необходимость в применении алгоритмов по разрешению write-write конфликтов
+	Primary-secondary
+	Slave-maser
+	Master-slave
+[*]	Master-master
+	Slave-slave
+
+83. При обновлении ряда документов (записей) в MongoDB, на какие свойства ACID по умолчанию можно расситивать при включенном журналировании? Перечислите заглавные буквы свойств через пробел
+[*]	C D
+
+84. Реализация распределения транзакций на основе Event-Driven Architecture
+[*]	обеспечивает eventual consistency
+[*]	обеспечивает отсутствие блокировки
+	обеспечивает consistency
+	позволяет координатору транзакций успешно восстанавливаться после сбоев
+
+"Transactions span multiple services and provide eventual consistency ? applications must deal with inconsistent data, Programming model is more complex than when using ACID transactions ? subscribers must detect and ignore duplicate events ? Often you must implement compensating transactions to recover from application-level failures"
+
+85. Сколько узлов должно быть а распределенной система для исправления Византийской проблемы в 2-х узлах. Введите число
+[*]	7
+
+"Для исправления Византийской проблемы в N узлах, распределенная система должна состоять как минимум из 3N+1 узлов и должна реализовывать специальный алгоритм консенсуса"
+
+
+86. Согласно Scale cube (X/Y/Z scaling), какой из осей соответсвует дання фраза: "scaling consists of running multiple copies of an application behind a load balancer"
+	Z-axis scaling(Вопрос)обеспечивает Data partitioning (sharding)
+[*]	X-axis scaling(Вопрос) фраза: "scaling consists of running multiple copies of an application behind a load balancer"
+	Y-axis scaling(Вопрос)соответствует подходу построения приложения на основе "Microservice Architecture"
+	Никакая
+
+87.	Согласно Scale cube (X/Y/Z scaling), какой из осей соответсвует дання фраза: "scaling consists of running multiple copies of an application behind a load balancer"
+	Z-axis scaling(Вопрос)обеспечивает Data partitioning (sharding)
+[*]	X-axis scaling(Вопрос) фраза: "scaling consists of running multiple copies of an application behind a load balancer"
+	Y-axis scaling(Вопрос)соответствует подходу построения приложения на основе "Microservice Architecture"
+	Никакая
+
+88. Что из перечисленного относиться к обязаностям узлов данных в HDFS
+	Ни один из вариантов неверен
+[*]	Хранить и извлекать блоки когда они сообщаются клиентами или NameNode
+	Управление пространством имен файловой системы
+	Ведение дерева файловой системы и метаданных для всех файлов и каталогов
+
+NEW NEW NEW
+
+89. The main role of the secondary namenode is to
+[*]	Periodically merge the namespace image with the edit log
+
+http://oraclesoainterview.blogspot.com/2013/07/hadoop-interview-questions-and-answers.html
+	90. Which method of the FileSystem object is used for reading a file in HDFS in Hadoop?
+	[*]	A. open()
+		B. access()
+		C. select()
+		D. None of the above
+
+	91. RPC means______. in Hadoop?
+		A. Remote processing call
+		B. Remote process call
+	[*]	C. Remote procedure call
+		D. None of the above
+
+	92. The switch given to “hadoop fs” command for detailed help ?
+		A. -show
+	[*]	B. -help
+		C. -?
+		D. None of the above
+
+	93. The size of block in HDFS in hadoop?
+		A. 512 bytes
+		B. 64 MB
+		C. 1024 KB
+		D. None of the above
+
+	94. Which MapReduce phase is theoretically able to utilize features of the underlying file system in order to optimize parallel execution in Hadoop?
+	[*]	A. Split
+		B. Map
+		C. Combine
+
+	95. What is the input to the Reduce function in Hadoop?
+	[*]	A. One key and a list of all values associated with that key.
+		B. One key and a list of some values associated with that key.
+		C. An arbitrarily sized list of key/value pairs.
+
+	96. How can a distributed filesystem such as HDFS provide opportunities for optimization of a MapReduce operation?
+		A. Data represented in a distributed filesystem is already sorted.
+		B. Distributed filesystems must always be resident in memory, which is much faster than disk.
+		C. Data storage and processing can be co-located on the same node, so that most input data relevant to Map or Reduce will be present on local disks or cache.
+	[*]	D. A distributed filesystem makes random access faster because of the presence of a dedicated node serving file metadata.
+
+	97. Which of the following MapReduce execution frameworks focus on execution in shared-memory environments? 
+		A. Hadoop
+		B. Twister
+	[*]	C. Phoenix
+
+	98. What is the implementation language of the Hadoop MapReduce framework? 
+	[*]	A. Java
+		B. C
+		C. FORTRAN
+		D. Python
+
+	99. The Combine stage, if present, must perform the same aggregation operation as Reduce ?
+		A. True
+	[*]	B. False
+
+	100. Which MapReduce stage serves as a barrier, where all previous stages must be completed before it may proceed? 
+	[*]	A. Combine
+		B. Group (a.k.a. 'shuffle')
+		C. Reduce
+		D. Write
+
+	101. Which TACC resource has support for Hadoop MapReduce?
+	[*]	A. Ranger
+		B. Longhorn
+		C. Lonestar
+		D. Spur
+
+	102. Which of the following scenarios makes HDFS unavailable in Hadoop?
+	[*]	A. JobTracker failure
+		B. TaskTracker failure
+		C. DataNode failure
+		D. NameNode failure
+		E. Secondary NameNode failure
+
+	103. Which TACC resource has support for Hadoop MapReduce in Hadoop?
+	[*]	A. Ranger
+		B. Longhorn
+		C. Lonestar
+		D. Spur
+
+	104. Which MapReduce stage serves as a barrier, where all previous stages must be completed before it may proceed in Hadoop?
+	[*]	A. Combine
+		B. Group (a.k.a. 'shuffle')
+		C. Reduce
+		D. Write
+
+	105. Which of the following scenarios makes HDFS unavailable in Hadoop?
+	[*]	A. JobTracker failure
+		B. TaskTracker failure
+		C. DataNode failure
+		D. NameNode failure
+		E. Secondary NameNode failure
+
+	106. You are running a Hadoop cluster with all monitoring facilities properly configured. Which scenario will go undetected in Hadoop?
+		A. Map or reduce tasks that are stuck in an infinite loop.
+		B. HDFS is almost full.
+	[*]	C. The NameNode goes down.
+		D. A DataNode is disconnectedfrom the cluster.
+		E. MapReduce jobs that are causing excessive memory swaps.
+
+	107. Which of the following utilities allows you to create and run MapReduce jobs with any executable or script as the mapper and/or the reducer?
+		A. Oozie
+		B. Sqoop
+		C. Flume
+	[*]	D. Hadoop Streaming
+
+	108. You need a distributed, scalable, data Store that allows you random, realtime read/write access to hundreds of terabytes of data. Which of the following would you use in Hadoop?
+		A. Hue
+		B. Pig
+		C. Hive
+		D. Oozie
+	[*]	E. HBase
+		F. Flume
+		G. Sqoop
+
+	109. Workflows expressed in Oozie can contain in Hadoop?
+		A. Iterative repetition of MapReduce jobs until a desired answer or state is reached.
+		B. Sequences of MapReduce and Pig jobs. These are limited to linear sequences of actions with exception handlers but no forks.
+		C. Sequences of MapReduce jobs only; no Pig or Hive tasks or jobs. These MapReduce sequences can be combined with forks and path joins.
+	[*]	D. Sequences of MapReduce and Pig. These sequences can be combined with other actions including forks, decision points, and path joins.
+
+	110. You have an employee who is a Date Analyst and is very comfortable with SQL. He would like to run ad-hoc analysis on data in your HDFS duster. Which of the following is a data warehousing software built on top of Apache Hadoop that defines a simple SQL-like query language well-suited for this kind of user?
+		A. Pig
+		B. Hue
+	[*]	C. Hive
+		D. Sqoop
+		E. Oozie
+		F. Flume
+		G. Hadoop Streaming
+
+	111. Which of the following statements most accurately describes the relationship between MapReduce and Pig?
+		A. Pig provides additional capabilities that allow certain types of data manipulation not possible with MapReduce.
+		B. Pig provides no additional capabilities to MapReduce. Pig programs are executed as MapReduce jobs via the Pig interpreter.
+		C. Pig programs rely on MapReduce but are extensible, allowing developers to do special-purpose processing not provided by MapReduce.
+	[*]	D. Pig provides the additional capability of allowing you to control the flow of multiple MapReduce jobs.
+
+	112. In a MapReduce job, you want each of you input files processed by a single map task. How do you configure a MapReduce job so that a single map task processes each input file regardless of how many blocks the input file occupies?
+		A. Increase the parameter that controls minimum split size in the job configuration.
+	[*]	B. Write a custom MapRunner that iterates over all key-value pairs in the entire file.
+		C. Set the number of mappers equal to the number of input files you want to process.
+		D. Write a custom FileInputFormat and override the method isSplittable to always return false.
+
+	113. Which of the following best describes the workings of TextInputFormat in Hadoop?
+		A. Input file splits may cross line breaks. A line thatcrosses tile splits is ignored.
+		B. The input file is split exactly at the line breaks, so each Record Reader will read a series of complete lines.
+		C. Input file splits may cross line breaks. A line that crosses file splits is read by the RecordReaders of both splits containing the brokenline.
+	[*]	D. Input file splits may cross line breaks. A line that crosses file splits is read by the RecordReader of the split that contains the end of the brokenline.
+		E. Input file splits may cross line breaks. A line that crosses file splits is read by the RecordReader of the split that contains the beginningof thebroken line.
+http://oraclesoainterview.blogspot.com/2013/07/hadoop-interview-questions-and-answers.html
+
+
+https://www.sanfoundry.com/hadoop-questions-campus-interviews/
+	114. Users can easily run Spark on top of Amazon’s __________
+		a) Infosphere
+	[*]	b) EC2
+		c) EMR
+		d) None of the mentioned
+
+	115. Point out the correct statement :
+	[*]	a) Spark enables Apache Hive users to run their unmodified queries much faster
+		b) Spark interoperates only with Hadoop
+		c) Spark is a popular data warehouse solution running on top of Hadoop
+		d) None of the mentioned
+
+	116. Spark runs on top of ___________, a cluster manager system which provides efficient resource isolation across distributed applications
+		a) Mesjs
+	[*]	b) Mesos
+		c) Mesus
+		d) All of the mentioned
+
+	117. Which of the following can be used to launch Spark jobs inside MapReduce ?
+		a) SIM
+	[*]	b) SIMR
+		c) SIR
+		d) RIS
+
+	118. Point out the wrong statement :
+	[*]	a) Spark is intended to replace, the Hadoop stack
+		b) Spark was designed to read and write data from and to HDFS, as well as other storage systems
+		c) Hadoop users who have already deployed or are planning to deploy Hadoop Yarn can simply run Spark on YARN
+		d) None of the mentioned
+
+	119. Which of the following language is not supported by Spark ?
+		a) Java
+	[*]	b) Pascal
+		c) Scala
+		d) Python
+
+	120. Spark is packaged with higher level libraries, including support for _________ queries.
+	[*]	a) SQL
+		b) C
+		c) C++
+		d) None of the mentioned
+
+	121. Spark includes a collection over ________ operators for transforming data and familiar data frame APIs for manipulating semi-structured data.
+		a) 50
+		b) 60
+		c) 70
+	[*]	d) 80
+
+	122. Spark is engineered from the bottom-up for performance, running ___________ faster than Hadoop by exploiting in memory computing and other optimizations.
+	[*]	a) 100x
+		b) 150x
+		c) 200x
+		d) None of the mentioned
+
+	123. Spark powers a stack of high-level tools including Spark SQL, MLlib for :
+		a) regression models
+		b) statistics
+	[*]	c) machine learning
+		d) reproductive research
+https://www.sanfoundry.com/hadoop-questions-campus-interviews/
+
+last screen is "qrgxylw apache xuxyuoy on 8 tuk.png"

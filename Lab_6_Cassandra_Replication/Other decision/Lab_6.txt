@@ -1,0 +1,200 @@
+#Casandra
+Ports
+7000	TCP	Non-encrypted inter-node cluster communication. Not used if SSL is in use.
+7001	TCP	Encrypted SSL inter-node cluster communication. Not used if SSL is not in use.
+7199	TCP	JMX monitoring port.
+9042	TCP	Client port used for native CQL.
+9160	TCP	Client port used for Thrift.
+
+##########################################################################################################################
+##########################################################################################################################
+#Create a Simple Cassandra Cluster With 3 Nodes
+#The main reason for this is because the cluster_name needs to be the same on all nodes
+
+
+service cassandra stop
+rm -rf /var/lib/cassandra/data/system/*
+
+
+
+################### cluster_name    ################### 
+cluster_name can be anything chosen by you to describe the name of the cluster. Space is allowed but make sure you wrap everything in quotes. All members of this cluster must have the same name.
+
+################### num_tokens      ################### 
+num_tokens is the number of virtual nodes within a Cassandra instance. This is used to partition the data and spread the data throughout the cluster. A good starting point is 256.
+
+################### seeds           ################### 
+seeds are the IP addresses of the clusters seed servers. Seed nodes are used as known places where cluster information (such as a list of nodes in the cluster) can be obtained. They are not a single point of failure as all active nodes have this information, they are just known locations that can be relied on to have the information when other machines can come and go. It’s recommended that there are 3 seed nodes per data centre.
+
+################### listen_address  ###################
+listen_address is the IP address that Cassandra will listen on for internal (Cassandra to Cassandra) communication will occur. Cassandra will try to guess your machines IP address if you leave it blank, but it’s best to specify it yourself. This will change on each node.
+
+################### rpc_address     ################### 
+rpc_address is the IP address that Cassandra will listen on for client based communication, such as through the CQL protocol. This will change on each node.
+
+################### endpoint_snitch ################### 
+endpoint_snitch is the ‘snitch’ used by Cassandra. A snitch is what tells Cassandra which data center and rack a node belongs to within a cluster. There are various types that could be used here, however describing them is outside the scope of this guide.
+
+vi /etc/cassandra/cassandra.yaml
+
+#Node 1
+------------------------------------
+cluster_name: 'JC Cluster'
+num_tokens: 256
+seed_provider:
+    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+        - seeds: 10.0.0.1, 10.0.0.2
+listen_address: 10.0.0.1
+rpc_address: 10.0.0.1
+endpoint_snitch: GossipingPropertyFileSnitch
+------------------------------------
+
+#Node 2
+------------------------------------
+cluster_name: 'JC Cluster'
+num_tokens: 256
+seed_provider:
+    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+        - seeds: 10.0.0.1, 10.0.0.2
+listen_address: 10.0.0.2
+rpc_address: 10.0.0.2
+endpoint_snitch: GossipingPropertyFileSnitch
+------------------------------------
+
+#Node 3
+------------------------------------
+cluster_name: 'JC Cluster'
+num_tokens: 256
+seed_provider:
+    - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+        - seeds: 10.0.0.1, 10.0.0.2
+listen_address: 10.0.0.3
+rpc_address: 10.0.0.3
+endpoint_snitch: GossipingPropertyFileSnitch
+------------------------------------
+
+
+	
+vi /etc/cassandra/cassandra-rackdc.properties
+
+#Example for node 1
+------------------------------------
+dc=uk_dc
+rack=rack1
+------------------------------------
+
+#Example for node 2:
+------------------------------------
+dc=uk_dc
+rack=rack1
+------------------------------------
+
+#Example for node 3:
+------------------------------------
+dc=uk_dc
+rack=rack2
+------------------------------------
+
+#Finally, remove the config file cassandra-topology.properties from the etc dir as that’s not used with our configuration.
+rm /etc/cassandra/cassandra-topology.properties
+
+#Starting your Cassandra cluster
+service cassandra start
+
+
+#Aditional
+cqlsh
+cqlsh> create keyspace Aurora WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '3' };  
+cqlsh> DESCRIBE keyspaces;
+##########################################################################################################################
+##########################################################################################################################
+
+#Викоритовуючи  cqlsh, створити три Keyspace: replication factor 1, 2, 3
+
+
+cqlsh
+cqlsh> create keyspace Aurora1 WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : '3' };  
+cqlsh> DESCRIBE keyspaces;
+
+
+##########################################################################################################################
+##########################################################################################################################
+
+#В кожному з кейспейсів створити таблиці 
+
+cqlsh> USE Aurora1;
+CREATE TABLE items (
+	id UUID,
+	name text,
+	category text,
+	manufacturer text,
+	price int,
+	properties map<text,text>,
+	PRIMARY KEY (category, price, id)
+);
+
+INSERT INTO items (id, name, category, manufacturer, price, properties)
+    VALUES(
+    5b6962dd-3f90-4c93-8f61-eabfa4a803e2, 
+    'Galaxy S',
+    'smartphone',
+    'SAMSUNG',
+    9300,
+    { 'cam' : '13px', 
+      'core' : 'i7' });
+INSERT INTO items (id, name, category, manufacturer, price, properties)
+    VALUES(
+    5b6962dd-3f90-4c93-8f61-eabfa4a803e3, 
+    'Galaxy J2',
+    'smartphone',
+    'SAMSUNG',
+    3500,
+    { 'cam' : '5px', 
+      'core' : 'i3',
+      'dualSim': 'true' });
+INSERT INTO items (id, name, category, manufacturer, price, properties)
+    VALUES(
+    5b6962dd-3f90-4c93-8f61-eabfa4a803e4, 
+    'Nokia 9',
+    'smartphone',
+    'NOKIA',
+    11000,
+    { 'cam' : '99px',
+      'frontCam': '29px', 
+      'core' : 'i101' });
+INSERT INTO items (id, name, category, manufacturer, price, properties)
+    VALUES(
+    5b6962dd-3f90-4c93-8f61-eabfa4a803e5, 
+    'Space X',
+    'laptop',
+    'SAMSUNG',
+    1500,
+    { 'HDD' : '1T', 
+      'core' : 'i9',
+      'system': 'Linux' });
+INSERT INTO items (id, name, category, manufacturer, price, properties)
+    VALUES(
+    5b6962dd-3f90-4c93-8f61-eabfa4a302e1, 
+    'Space X2',
+    'laptop',
+    'SAMSUNG',
+    1300,
+    { 'HDD' : '2T', 
+      'core' : 'i10',
+      'system': 'Windows' });
+SELECT * FROM items WHERE name = 'Galaxy S' ALLOW FILTERING; 
+##########################################################################################################################
+##########################################################################################################################
+
+#Для якогось запису з кожного з кейспейсу виведіть ноди на яких зберігаються дані
+nodetool <options> getendpoints -- <keyspace> <table> key
+
+##########################################################################################################################
+##########################################################################################################################
+
+#Для кожного з кейспейсів відключивши одну з нод визначить чи можемо гарантувати strong consistency, для читання та запису, змінюючи рівень consistency
+CONSISTENCY level
+
+##########################################################################################################################
+##########################################################################################################################
+

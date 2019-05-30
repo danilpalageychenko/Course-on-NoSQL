@@ -1,0 +1,371 @@
+use shop
+
+db.items.insert({"modelid": 1, "category": "Phone", "model": "iPhone6", "producer": "Apple", "price": 600})
+db.items.insert({"modelid": 2, "category": "Phone", "model": "L Bello", "producer": "LG", "price": 450})
+db.items.insert({"modelid": 3, "category": "TabletPC", "model": "ThinkPad E531", "producer": "Lenovo", "price": 700})
+db.items.insert({"modelid": 4, "category": "TabletPC", "model": "Aspire E15 E5-576G", "producer": "Acer", "price": 500})
+db.items.insert({"modelid": 5, "category": "TV-set", "model": "TX40-esr500", "producer": "Panasonic", "price": 550})
+db.items.insert({"modelid": 6, "category": "TV-set", "model": "32s1750ev", "producer": "Toshiba", "price": 800})
+db.items.insert({"modelid": 7, "category": "TV-set", "model": "SE40-esr800", "producer": "Sony", "price": 450})
+db.items.insert({"modelid": 8, "category": "TabletPC", "model": "ThinkPad N320", "producer": "Lenovo", "price": 750})
+db.items.insert({"modelid": 9, "category": "Phone", "model": "Red 690", "producer": "Apple", "price": 470})
+db.items.insert({"modelid": 10, "category": "Phone", "model": "3120 classic", "producer": "Nokia", "price": 300})
+
+
+1.	
+db.orders.insert(
+{    
+	"order_number" : 7,
+	"date" : ISODate("2018-09-10"),
+	"total_sum" : 1050,
+	"customer" : {
+    	"name" : "Viktor",
+    	"surname" : "sadasdasd",
+    	"phones" : 12344554,
+    	"address" : "Peremohy 37, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Viktor asdasdasdasd",
+    	"cardId" : 665321
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef081791aa15e519982a21")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef082b91aa15e519982a22")
+    	}
+	]
+}
+)
+
+2.	db.orders.insert(
+{    
+	"order_number" : 9,
+	"date" : ISODate("2018-06-10"),
+	"total_sum" : 1150,
+	"customer" : {
+    	"name" : "Alex",
+    	"surname" : "ewqeqweqweqwe123",
+    	"phones" : 13344554,
+    	"address" : "Balzaka 3, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Alex ewqeqweqweqwe123",
+    	"cardId" : 875321
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef082b91aa15e519982a22")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef083791aa15e519982a23")
+    	}
+	]
+}
+
+)
+
+3.	db.orders.insert(
+{    
+	"order_number" : 10,
+	"date" : ISODate("2018-05-01"),
+	"total_sum" : 1200,
+	"customer" : {
+    	"name" : "Oleh",
+    	"surname" : "Petrov",
+    	"phones" : 13344555,
+    	"address" : "Khreshatyk 3, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Oleh Petrov",
+    	"cardId" : 875322
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef083791aa15e519982a23")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef084491aa15e519982a24")
+    	}
+	]
+}
+
+)
+
+4.	db.orders.insert(
+{    
+	"order_number" : 21,
+	"date" : ISODate("2018-05-01"),
+	"total_sum" : 1050,
+	"customer" : {
+    	"name" : "Ivan",
+    	"surname" : "Sydorov",
+    	"phones" : 13344556,
+    	"address" : "Khreshatyk 10, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Ivan Sydorov",
+    	"cardId" : 875323
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef084491aa15e519982a24")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef085691aa15e519982a25")
+    	}
+	]
+}
+
+)
+
+5.	db.orders.insert(
+{    
+	"order_number" : 23,
+	"date" : ISODate("2018-07-02"),
+	"total_sum" : 1350,
+	"customer" : {
+    	"name" : "Viktor",
+    	"surname" : "ghfjfhjfghjfh",
+    	"phones" : 13344557,
+    	"address" : "Borshchagivska 142, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Viktor ghfjfhjfghjfh",
+    	"cardId" : 775323
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef085691aa15e519982a25")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0ac591aa15e519982a26")
+    	}
+	]
+}
+
+)
+
+6.	db.orders.insert(
+{    
+	"order_number" : 36,
+	"date" : ISODate("2018-07-12"),
+	"total_sum" : 1250,
+	"customer" : {
+    	"name" : "Oleksandr",
+    	"surname" : "eryeryery",
+    	"phones" : 13344558,
+    	"address" : "Borshchagivska 144, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Oleksandr eryeryery",
+    	"cardId" : 675323
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0ac591aa15e519982a26")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0ad891aa15e519982a27")
+    	}
+	]
+}
+
+)
+
+
+7.	db.orders.insert(
+{    
+	"order_number" : 41,
+	"date" : ISODate("2018-11-11"),
+	"total_sum" : 1200,
+	"customer" : {
+    	"name" : "Oksana",
+    	"surname" : "qweqw",
+    	"phones" : 13344559,
+    	"address" : "Vyborzka 22, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Oksana qweqw",
+    	"cardId" : 575323
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0ad891aa15e519982a27")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0ae491aa15e519982a28")
+    	}
+	]
+}
+
+)
+
+
+8.	db.orders.insert(
+{    
+	"order_number" : 58,
+	"date" : ISODate("2018-12-19"),
+	"total_sum" : 1220,
+	"customer" : {
+    	"name" : "Maxim",
+    	"surname" : "Tsap",
+    	"phones" : 13344560,
+    	"address" : "Vyborzka 30, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Maxim Tsap",
+    	"cardId" : 475323
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0ae491aa15e519982a28")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0aef91aa15e519982a29")
+    	}
+	]
+}
+
+)
+
+9.	db.orders.insert(
+{    
+	"order_number" : 59,
+	"date" : ISODate("2018-12-31"),
+	"total_sum" : 770,
+	"customer" : {
+    	"name" : "Dariya",
+    	"surname" : "Deshunina",
+    	"phones" : 13344561,
+    	"address" : "Hrushevskogo 55, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Dariya Deshunina",
+    	"cardId" : 375323
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0aef91aa15e519982a29")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0afc91aa15e519982a2a")
+    	}
+	]
+}
+
+)
+
+
+10.	db.orders.insert(
+{    
+	"order_number" : 60,
+	"date" : ISODate("2018-01-01"),
+	"total_sum" : 900,
+	"customer" : {
+    	"name" : "Arthur",
+    	"surname" : "Katruk",
+    	"phones" : 13344562,
+    	"address" : "Hetmana 7, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Arthur Katruk",
+    	"cardId" : 375324
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef0afc91aa15e519982a2a")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5bef081791aa15e519982a21")
+    	}
+	]
+}
+
+)
+
+
+
+Наступні задвання робити тільки на парі
+//////////Приклад вставки на непрацюючу ноду
+db.orders.insert(
+{    
+	"order_number" : 30,
+	"date" : ISODate("2018-01-01"),
+	"total_sum" : 900,
+	"customer" : {
+    	"name" : "Ivan",
+    	"surname" : "Popov",
+    	"phones" : 13344562,
+    	"address" : "Hetmana 7, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Ivan Popov",
+    	"cardId" : 375324
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5beb4bfdb8336cfd4d1f3549")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5beb4b29b8336cfd4d1f3540")
+    	}
+	]
+}
+
+)
+
+
+///////Приклад вставки на працюючу ноду
+
+db.orders.insert(
+{    
+	"order_number" : 41,
+	"date" : ISODate("2018-12-31"),
+	"total_sum" : 770,
+	"customer" : {
+    	"name" : "Dariya",
+    	"surname" : "Deshunina",
+    	"phones" : 13344561,
+    	"address" : "Hrushevskogo 55, Kyiv, UA"
+	},
+	"payment" : {
+    	"card_owner" : "Dariya Deshunina",
+    	"cardId" : 375323
+	},
+	"order_items_id" : [
+    	{
+        	"$ref" : "items",
+        	"$id" : ObjectId("5beb4bf6b8336cfd4d1f3548")
+    	},
+        {
+        	"$ref" : "items",
+        	"$id" : ObjectId("5beb4bfdb8336cfd4d1f3549")
+    	}
+	]
+}
+
+)

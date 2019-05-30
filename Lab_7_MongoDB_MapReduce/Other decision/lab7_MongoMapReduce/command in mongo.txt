@@ -1,0 +1,15 @@
+в 7_7_ запустить:
+
+rs.initiate({_id:"replset",configsvr:true,members:[{_id:0,host:"localhost:27030"}]})
+
+в 7_9_ запустить:
+
+sh.addShard("localhost:27006")
+sh.addShard("localhost:27007")
+sh.addShard("localhost:27008")
+sh.addShard("localhost:27009")
+sh.addShard("localhost:27010")
+
+sh.enableSharding('laba7')
+
+sh.status()

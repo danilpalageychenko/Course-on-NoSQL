@@ -1,0 +1,2 @@
+https://docs.google.com/document/d/1U9VblNHExcG5zz9gfVNwACIW4qPajD9JRM2Ng4yQqso/edit - задание
+https://docs.datastax.com/en/dse/5.1/cql/cql/cql_using/cqlSyntax.html#cqlSyntax - документация

@@ -1,0 +1,223 @@
+incremental 
+mapF = function(){
+    for (var index = 0; index < this.order_items_id.length; index++){
+            
+            var key = this.order_items_id[index].$id + ':'  +this.date.getMonth()
+            emit(key, 1)
+        }
+}
+reduceF = function(keyProd, arrayOfElement){
+    
+    return Array.sum(arrayOfElement);
+}
+db.orders.mapReduce(
+                     mapF,
+                     reduceF,
+                     { out:  { reduce: "map_reduce_example_3"} ,                  
+                         query: { date:
+                                  { $gt: new Date('01/01/2011'),
+                                     $lt: new Date('01/01/2012')
+                                      }
+                              }
+                      }
+                   ).find()
+				   
+				   
+				   
+				   
+mapF = function(){
+            var array = this._id.split(':')
+            value = { year : array[1], value: this.value }
+            emit(array[0] + ':' + array[2], value)
+}
+reduceF = function(keyProd, arrayOfElement){
+    var y = arrayOfElement[0].year  + '-'+  arrayOfElement[1].year;
+    var v = arrayOfElement[1].value - arrayOfElement[0].value;
+    return { year:  y, value:  v};
+}
+db.map_reduce_example.mapReduce(
+                     mapF,
+                     reduceF,
+                     { out: "map_reduce_example_2"
+                      }
+                   ).find()
+				   
+				   
+				
+mapF = function(){
+    for (var index = 0; index < this.order_items_id.length; index++){
+            
+            var key = this.order_items_id[index].$id + ':' + this.date.getFullYear() + ':'  +this.date.getMonth()
+            emit(key, 1)
+        }
+}
+reduceF = function(keyProd, arrayOfElement){
+    
+    return Array.sum(arrayOfElement);
+}
+db.orders.mapReduce(
+                     mapF,
+                     reduceF,
+                     { out: "map_reduce_example",                  
+                         query: { date:
+                                  { $lt: new Date('04/15/2015') }
+                              }
+                      }
+                   ).find()
+				   
+
+				   
+				   
+				   
+				 
+1 задание
+
+mapF = function(){
+    for (var index = 0; index < this.order_items_id.length; index++){
+            
+            var key = this.order_items_id[index].$id + ':' + this.date.getFullYear() + ':'  +this.date.getMonth()
+            emit(key, 1)
+        }
+}
+reduceF = function(keyProd, arrayOfElement){
+    
+    return Array.sum(arrayOfElement);
+}
+db.orders.mapReduce(
+                     mapF,
+                     reduceF,
+                     { out: "map_reduce_example",                  
+                         query: { date:
+                                  { $lt: new Date('04/15/2015') }
+                              }
+                      }
+                   ).find()
+
+
+
+ mapF = function(){
+            var array = this._id.split(':')
+            value = { year : array[1], value: this.value }
+            emit(array[0] + ':' + array[2], value)
+}
+reduceF = function(keyProd, arrayOfElement){
+    var y = arrayOfElement[0].year  + '-'+  arrayOfElement[1].year;
+    var v = arrayOfElement[1].value - arrayOfElement[0].value;
+    return { year:  y, value:  v};
+}
+db.map_reduce_example.mapReduce(
+                     mapF,
+                     reduceF,
+                     { out: "map_reduce_example_2"
+                      }
+                   ).find()
+				   
+				   
+				   
+				   
+				   
+				   
+				   
+				   
+use lab7
+
+sh.enableSharding("lab7")
+
+sh.shardCollection("lab7.items", { _id : "hashed"})
+
+sh.shardCollection("lab7.orders", { _id : "hashed"})
+
+1)db.items.mapReduce(
+	function() { 
+		emit(this.producer, 1;}, 
+	function(key, values) {
+		return Array.sum(values)},
+	{out: "map_reduce_task_1"}
+).find()
+
+2)db.items.mapReduce(
+	function() { 
+		emit(this.producer, this.cost);}, 
+	function(key, values) {
+		return Array.sum(values)},
+	{out: "map_reduce_task_2"}
+).find()
+
+3)db.orders.mapReduce(
+	function() { 
+		emit(this.name, this.total_sum);}, 
+	function(key, values) {
+		return Array.sum(values)},
+	{out: "map_reduce_task_3"}
+).find()
+
+4)db.orders.mapReduce(function() { emit(this.name, this.total_sum);}, function(key, values) {return Array.sum(values)},{query: {date: {$gt: new Date(2017, 10,24, 6, 56)}},out: "map_reduce_task_4"}).find()
+
+5)db.orders.mapReduce(function() { emit('avg_count', this.total_sum);}, function(key, values) {return Array.sum(values)},{out: "map_reduce_task_5"}).find()
+
+6)db.orders.mapReduce(function() { for( var i=0; i<this.items.length; i++){ var key = this.items[i]; emit(key, 1);}}, function(key, values) {return Array.sum(values)},{out: "map_reduce_task_6"}).find()
+
+7)db.orders.mapReduce(function() { for( var i=0; i<this.items.length; i++){ var key = this.items[i]; emit(key+' was bought by '+this.name, 1);}}, function(key, values) {return Array.sum(values)},{out: "map_reduce_task_7"}).find()
+
+8)db.orders.mapReduce(function() { for( var i=0; i<this.items.length; i++){ var key = this.items[i]; emit(key, 1);}}, function(key, values) {return Array.sum(values)},{out: "map_reduce_task_8"}).find({value: {$gt: 1}})
+
+9)db.orders.mapReduce(function() { for( var i=0; i<this.items.length; i++){ var key = this.items[i]; emit(key, 1);}}, function(key, values) {return Array.sum(values)},{out: "map_reduce_task_9"}).find().sort({value: -1})
+
+
+
+
+
+седьмое
+db.Orders.mapReduce(
+    function() {
+        for (i=0; i<this.order_items_id.length; i++){
+            var key = this.order_items_id[i].$id;
+            var value = this.customer;
+            emit(key,value);
+        }        
+    },
+    function(key, values){
+        reduced = {};
+        for (i=0; i<values.length; i++){
+            reduced[i] = {
+                name : values[i].name, 
+                surname: values[i].surname,
+                phones: values[i].phones,
+                address: values[i].address
+           };
+        }
+
+        return reduced;
+        },        
+    {out:"customers for item"})
+
+
+восьмое
+db.Orders.mapReduce(
+    function() {
+        for (var i=0; i<this.order_items_id.length; i++){
+            var key = {"item_id": this.order_items_id[i].$id, "customer": this.customer} ;
+            var value = 1;
+            emit(key, value);
+        }
+    },
+    function(key, value){
+        return Array.sum(value);
+    },
+    {out: "cust_for_item"})
+
+
+db.cust_for_item.mapReduce(
+    function() {
+        if(this.value > 1){
+            emit(this._id.item_id, this._id.customer)
+        }
+    },
+    function (key, values){
+        reduced = {};
+        for (i=0; i<values.length; i++){
+            reduced[i] = {customer: values[i]};
+        }
+        return reduced;
+    },
+    {out: "cust_gt_1"})
